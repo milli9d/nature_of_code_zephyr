@@ -80,11 +80,17 @@ if [[ ${command} == "build" ]]; then
         pristine=always
     fi
 
-    (
-        source ~/zephyrproject/.venv/bin/activate
-        cd ~/zephyrproject/zephyr
-        west build -b=${board} ${proj_dir} -p=${pristine}
-    )
+    source ~/zephyrproject/.venv/bin/activate
+    cd ~/zephyrproject/zephyr
+    west build -b=${board} ${proj_dir} -p=${pristine}
+
+    if [[ ${4} == "flash" ]]; then
+        west flash    
+    fi
+
+    if [[ ${5} == "monitor" ]]; then
+        west espressif monitor    
+    fi
 fi
 
 if [[ ${command} == "flash" ]]; then

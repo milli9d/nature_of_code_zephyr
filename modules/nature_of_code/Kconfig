@@ -1,0 +1,13 @@
+config NATURE_OF_CODE
+    bool "Nature of Code [Full]"
+    select CANVAS_FRAME_BUFFER
+    help 
+        Include the full nature of code zephyr library
+
+config NATURE_OF_CODE_MINIMAL
+    bool "Nature of Code [Full]"
+    select CANVAS_FRAME_BUFFER
+    help 
+        Include the minimal nature of code zephyr library
+
+orsource "/**/*.Kconfig"

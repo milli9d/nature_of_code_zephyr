@@ -1,0 +1,5 @@
+config CANVAS_FRAME_BUFFER
+    bool "Canvas Frame Buffer"
+    default n
+    help 
+        Configurable frame buffer to be used as canvas"

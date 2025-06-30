@@ -8,8 +8,8 @@
 
 namespace noc {
 
-#define FRAME_BOUND_X 800u
-#define FRAME_BOUND_Y 800u
+#define FRAME_BOUND_X 400u
+#define FRAME_BOUND_Y 400u
 #define FRAME_BPP_MAX 8u
 
 class frame_buffer
@@ -51,25 +51,49 @@ class frame_buffer
      * @param col The column index of the pixel in the frame buffer.
      * @return A pointer to the pixel data at the specified (row, col).
      */
-    constexpr uint8_t* operator()(uint32_t row, uint32_t col);
+    uint8_t* operator()(uint32_t row, uint32_t col);
 
     /**
      * @brief get the bytes per pixel value
      * @return
      */
-    constexpr uint32_t get_bpp();
+    constexpr uint32_t get_bpp()
+    {
+        return _bpp;
+    }
 
     /**
      * @brief get the total size of the buffer in bytes
      * @return
      */
-    constexpr uint32_t get_size();
+    constexpr uint32_t get_size()
+    {
+        return _size;
+    }
+
+    /**
+     * @brief get the width of the framebuffer in pixels
+     * @return
+     */
+    constexpr uint32_t get_width()
+    {
+        return _width;
+    }
+
+    /**
+     * @brief get the height of the framebuffer in pixels
+     * @return
+     */
+    constexpr uint32_t get_height()
+    {
+        return _height;
+    }
 
     /**
      * @brief get the raw data buffer
      * @return
      */
-    constexpr uint8_t* get_buffer();
+    uint8_t* get_buffer();
 
     /* ===================================================================== */
     /* Constructors */
@@ -77,6 +101,10 @@ class frame_buffer
 
     /* delete default constructor */
     frame_buffer() = delete;
+
+    void fill_buffer(uint8_t* val, uint8_t val_size);
+
+    void fill_buffer_rand();
 
     /**
      * @brief Constructs a frame buffer with the specified dimensions and bits per pixel (BPP).

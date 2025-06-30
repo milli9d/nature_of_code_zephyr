@@ -8,7 +8,7 @@
 
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
-LOG_MODULE_REGISTER(frame_buf, 4);
+LOG_MODULE_REGISTER(frame_buf);
 
 /**
  * @brief
@@ -23,30 +23,12 @@ namespace noc {
 /* ========================================================================= */
 
 /**
- * @brief get the bytes per pixel value
- * @return
- */
-constexpr uint32_t frame_buffer::get_bpp()
-{
-    return _bpp;
-}
-
-/**
  * @brief get the raw data buffer
  * @return pointer to data buffer [uint8_t*]
  */
-constexpr uint8_t* frame_buffer::get_buffer()
+uint8_t* frame_buffer::get_buffer()
 {
     return _data;
-}
-
-/**
- * @brief get the total size of the buffer in bytes
- * @return
- */
-constexpr uint32_t frame_buffer::get_size()
-{
-    return _size;
 }
 
 /**
@@ -60,7 +42,7 @@ constexpr uint32_t frame_buffer::get_size()
  * @param col The column index of the pixel in the frame buffer.
  * @return A pointer to the pixel data at the specified (row, col).
  */
-constexpr uint8_t* frame_buffer::operator()(uint32_t row, uint32_t col)
+uint8_t* frame_buffer::operator()(uint32_t row, uint32_t col)
 {
     if (row >= _height || col >= _width) {
         LOG_ERR("Index out of bounds\n");
@@ -75,6 +57,27 @@ constexpr uint8_t* frame_buffer::operator()(uint32_t row, uint32_t col)
 
     LOG_DBG("_data(%u, %u) = index %u", row, col, out_idx);
     return &_data[out_idx];
+}
+
+void frame_buffer::fill_buffer(uint8_t* val, uint8_t val_size)
+{
+    /* S.C : check if value matches the size expected */
+    if (val_size != _bpp) {
+        LOG_ERR("Value size %u does not match BPP %u", val_size, _bpp);
+        return;
+    }
+
+    for (uint32_t i = 0u; i < _size; i++) {
+        memcpy(&_data[i], val, val_size);
+    }
+}
+
+void frame_buffer::fill_buffer_rand()
+{
+    uint16_t* ptr = (uint16_t*)_data;
+    for (uint32_t i = 0u; i < _size; i++) {
+        ptr[i] = rand() % UINT16_MAX;
+    }
 }
 
 /* ========================================================================= */
@@ -119,8 +122,10 @@ frame_buffer::frame_buffer(uint32_t width, uint32_t height, uint32_t bpp)
 
     _pvt.stk_alloc = false;
 
-    LOG_DBG("Frame Buffer allocated on Heap (0x%p) : w = %u h = %u bpp = %u sz = %u", (void*)_data,
-            _width, _height, _bpp, _size);
+    if (_data) {
+        LOG_DBG("Frame Buffer allocated on Heap (0x%p) : w = %u h = %u bpp = %u sz = %u",
+                (void*)_data, _width, _height, _bpp, _size);
+    }
 }
 
 /**

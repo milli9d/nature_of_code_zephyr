@@ -1,0 +1,5 @@
+config RANDOM_WALKER
+    bool "Random Walker library"
+    default n
+    help 
+        Randomly walks through the plane

@@ -1,12 +1,15 @@
 config NATURE_OF_CODE
     bool "Nature of Code [Full]"
     select CANVAS_FRAME_BUFFER
+    select RANDOM_WALKER
+    select NOC_COMMON
     help 
         Include the full nature of code zephyr library
 
 config NATURE_OF_CODE_MINIMAL
     bool "Nature of Code [Full]"
     select CANVAS_FRAME_BUFFER
+    select NOC_COMMON
     help 
         Include the minimal nature of code zephyr library
 

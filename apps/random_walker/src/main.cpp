@@ -1,11 +1,18 @@
+#include <cstdint>
+#include <cstdlib>
+#include <ctime>
+#include <cstdbool>
+
 #include <zephyr/kernel.h>
 #include <zephyr/init.h>
 #include <zephyr/display/cfb.h>
 #include <zephyr/drivers/gpio.h>
+#include <zephyr/random/random.h>
 #include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(main);
 
 #include <canvas.hpp>
+#include <random_walker.hpp>
 #include <frame_buffer.hpp>
 #include <pin_defines.hpp>
 
@@ -73,10 +80,6 @@ int main()
             .frame_incomplete = false
         };
         /* Fill the canvas with random colors */
-        uint16_t color = rand() % UINT16_MAX;
-        _canvas.write_pixel(rand() % _cfg.x_max, rand() % _cfg.y_max, (uint8_t*)&color,
-                            sizeof(uint16_t));
-
         rc = display_write(dev, TFT_X_OFF, TFT_Y_OFF, &desc, (void*)_canvas.get_frame_buffer_raw());
         if (rc != 0) {
             LOG_ERR("Failed to write to display: %d", rc);
@@ -84,25 +87,31 @@ int main()
         }
     }
 
-    while (1) {
-        uint32_t x = rand() % _cfg.x_max;
-        uint32_t y = rand() % _cfg.y_max;
+    uint16_t                  color      = sys_rand16_get() % UINT16_MAX;
+    noc::random_walker::pos_t _pos       = { .x = sys_rand32_get() % TFT_W,
+                                             .y = sys_rand32_get() % TFT_H };
+    static noc::random_walker _rand_walk = noc::random_walker(_pos);
 
+    uint32_t count = 0;
+    while (1) {
         struct display_buffer_descriptor desc = { .buf_size         = 2u,
                                                   .width            = 1u,
                                                   .height           = 1u,
                                                   .pitch            = 1u,
                                                   .frame_incomplete = false };
 
-        uint16_t color = rand() % UINT16_MAX;
-
-        rc = display_write(dev, TFT_X_OFF + x, TFT_Y_OFF + y, &desc, &color);
+        rc = display_write(dev, TFT_X_OFF + _pos.x, TFT_Y_OFF + _pos.y, &desc, &color);
         if (rc != 0) {
             LOG_ERR("Failed to write to display: %d", rc);
             return rc;
         }
+        _pos = _rand_walk.next();
+        count++;
+        if (count % 2000u == 0) {
+            color = sys_rand16_get() % UINT16_MAX;
+        }
 
-        k_sleep(K_MSEC(1));
+        k_sleep(K_USEC(10));
     }
 
     return 0;

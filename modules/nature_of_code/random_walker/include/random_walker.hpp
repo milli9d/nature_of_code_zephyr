@@ -9,11 +9,19 @@ namespace noc {
 
 class random_walker
 {
-  private:
-    struct {
+  public:
+    using pos_t = struct {
         uint32_t x;
         uint32_t y;
-    } _pos;
+    };
+
+  private:
+    pos_t pos; ///< Current position of the random walker
+
+  public:
+    const pos_t& next();
+    random_walker(const pos_t& pos_in);
+    random_walker();
 };
 
 } // namespace noc

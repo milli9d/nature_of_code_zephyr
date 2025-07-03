@@ -1,0 +1,3 @@
+[submodule "modules/reiki_sdk_zephyr"]
+	path = modules/reiki_sdk_zephyr
+	url = https://github.com/milli9d/reiki_sdk_zephyr.git

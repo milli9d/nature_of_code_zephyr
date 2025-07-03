@@ -111,7 +111,7 @@ int main()
             color = sys_rand16_get() % UINT16_MAX;
         }
 
-        k_sleep(K_USEC(10));
+        k_sleep(K_USEC(5));
     }
 
     return 0;

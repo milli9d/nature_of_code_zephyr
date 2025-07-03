@@ -1,4 +1,4 @@
-zephyr_library(noc_common)
+zephyr_library_named(noc_common)
 
 # add library sources
 file(GLOB_RECURSE srcs ${CMAKE_CURRENT_LIST_DIR}/src/*.c*)

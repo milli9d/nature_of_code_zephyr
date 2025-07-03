@@ -1,4 +1,4 @@
-zephyr_library(random_walker)
+zephyr_library_named(random_walker)
 
 # add library sources
 file(GLOB_RECURSE srcs ${CMAKE_CURRENT_LIST_DIR}/src/*.c*)

@@ -1,4 +1,4 @@
-zephyr_library(canvas_frame_buffer)
+zephyr_library_named(canvas_frame_buffer)
 
 # add library sources
 file(GLOB_RECURSE srcs ${CMAKE_CURRENT_LIST_DIR}/src/*.c*)

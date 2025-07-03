@@ -4,14 +4,17 @@ cmake_minimum_required(VERSION 3.30.2)
 # add modules
 list(APPEND EXTRA_ZEPHYR_MODULES
     ${CMAKE_CURRENT_SOURCE_DIR}/../../modules/nature_of_code
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../modules/reiki_sdk_zephyr
 )
 
 # import custom board package
 # list(APPEND BOARD_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/../../)
 
 # import overlays for CPUs
-set(DTC_OVERLAYS_DIR  ${CMAKE_CURRENT_SOURCE_DIR}/../../overlays)
-set(DTC_OVERLAY_FILE ${DTC_OVERLAYS_DIR}/waveshare_1_69_touch_tft_esp32s3.overlay)
+set(DTC_OVERLAYS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../overlays)
+
+# set(DTC_OVERLAY_FILE ${DTC_OVERLAYS_DIR}/waveshare_1_69_touch_tft_esp32s3.overlay)
+# set(DTC_OVERLAY_FILE ${DTC_OVERLAYS_DIR}/waveshare_1_47_tft_esp32c6.overlay)
 
 # add drivers
 

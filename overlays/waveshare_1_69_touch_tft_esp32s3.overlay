@@ -33,15 +33,14 @@
 &i2c0 {
     status = "okay";
     pinctrl-0 = <&waveshare_i2c_bus>;
-    
-    // // 51 or 6b
-    // cst816s: cst816s@6b {
-    //     compatible = "hynitron,cst816s";
-    //     reg = <0x6b>;
-    //     rst-gpios = <&gpio0 13 GPIO_ACTIVE_HIGH>;
-    //     irq-gpios = <&gpio0 14 GPIO_ACTIVE_HIGH>;
-    //     status = "okay";
-    // };
+
+    cst816s: cst816s@15 {
+        compatible = "hynitron,cst816s";
+        reg = <0x15>;
+        rst-gpios = <&gpio0 13 GPIO_ACTIVE_LOW>;	// GPIO0 13
+        irq-gpios = <&gpio0 14 GPIO_ACTIVE_HIGH>;	// GPIO0 14
+        status = "okay";
+    };
 };
 
 &spi2 {

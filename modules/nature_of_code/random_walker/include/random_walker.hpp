@@ -15,12 +15,12 @@ class random_walker
         uint32_t y;
     };
 
-  private:
-    pos_t pos; ///< Current position of the random walker
-
   public:
+    pos_t pos; ///< Current position of the random walker
     const pos_t& next();
+
     random_walker(const pos_t& pos_in);
+    random_walker(uint32_t x, uint32_t y);
     random_walker();
 };
 
